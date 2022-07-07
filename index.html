@@ -25,6 +25,261 @@
     <script type="text/javascript" src="/js/slick.min.js"></script>
 
     <script type="text/javascript" src="/js/mobile.js"></script>
+
+    <script type="text/javascript">
+        document.createElement("article");
+        document.createElement("aside");
+        document.createElement("figure");
+        document.createElement("footer");
+        document.createElement("header");
+        document.createElement("hgroup");
+        document.createElement("nav");
+        document.createElement("section");
+
+
+        $(document).ready(function(e) {
+            console.log('done ready')
+            //new background size
+            $('a.slider_image').css("background-size","cover");
+
+            $('.mobileMenu').click(function() {
+                if($('.mobileMenu>ul>li:last').is(':visible'))
+                {
+                    $('.mobileMenu>ul').removeClass('opened');
+                    $('.mobileMenu>ul>li:gt(0)').hide();
+                }
+                else
+                {
+                    $('.mobileMenu>ul').addClass('opened');
+                    $('.mobileMenu>ul>li:gt(0)').show();
+                }
+            });
+
+
+            //checkboxes
+            $('input[type=checkbox]').each(function(){
+                if($(this).is(':checked'))
+                {
+
+                    $(this).wrap('<span class="typeCheck active"></span>').css({display:'none'});
+                }
+                else
+                    $(this).wrap('<span class="typeCheck"></span>').css({display:'none'});
+            });
+            $('.typeCheck').click(function(){
+                if($(this).hasClass('active'))
+                {
+                    $(this).removeClass('active');
+                    $('.text-check').removeClass('active');
+                    $(this).find('input[type=checkbox]').removeAttr('checked').trigger("change");
+                    $('.shippingAddressBlock').show();
+                }
+                else
+                {
+                    $(this).addClass('active');
+                    $('.text-check').addClass('active');
+                    $(this).find('input[type=checkbox]').attr('checked','checked').trigger("change");
+                    $('.shippingAddressBlock').hide();
+                }
+            });
+
+            //placeholders on ie
+            jQuery.browser = {};
+            jQuery.browser.mozilla = /mozilla/.test(navigator.userAgent.toLowerCase()) && !/webkit/.test(navigator.userAgent.toLowerCase());
+            jQuery.browser.webkit = /webkit/.test(navigator.userAgent.toLowerCase());
+            jQuery.browser.opera = /opera/.test(navigator.userAgent.toLowerCase());
+            jQuery.browser.msie = /msie/.test(navigator.userAgent.toLowerCase());
+            jQuery.browser.safari = /applewebkit/.test(navigator.userAgent.toLowerCase());
+            if(jQuery.browser.msie)
+            {
+                $('input[type=text], textarea').each(function(){
+                    if($(this).val()=='')
+                        $(this).val($(this).attr('placeholder'));
+                }).focusin(function(){
+                    if($(this).val()==$(this).attr('placeholder'))
+                        $(this).val('');
+                }).focusout(function(){
+                    if($(this).val().length==0)
+                        $(this).val($(this).attr('placeholder'));
+                });
+            }
+
+
+
+            /*event click over seletc*/
+            $(document).on('click', '.select', function(e) {
+                e.stopPropagation();
+
+                var select =$(this).parent().find('select');
+
+
+                theUl=$(this).find('ul');
+
+                if(theUl.is(':visible'))
+                    theUl.hide();
+                else
+                    $(' .select ul').hide();
+                theUl.show();
+            });
+
+
+
+            $('body').click(function(e){
+                if($(' .select ul').is(':visible'))
+                    $('.select ul').css({display:'none'});
+            });
+
+            $(window).resize(function(e) {
+                var width_center= (($(window).width()-$('.content_center').width())/2)+10;
+                $('.back-black2').css({ width:width_center});
+
+                if($(window).width()>767)
+                {
+                    $('.home_login_block_text1').insertAfter('.menu2');
+                }
+                else
+                {
+                    $('.home_login_block_text1').appendTo('.home_login');
+                }
+            });
+
+            updateSelectItems();
+
+
+            $('.go_to').click( function(){
+                var scroll_el = $(this).attr('href');
+                if ($(scroll_el).length != 0) {
+                    $('html, body').animate({ scrollTop: $(scroll_el).offset().top }, 500);
+                }
+                return false;
+            });
+            initHideHeader();
+        });
+
+
+        function updateSelectItems(){
+            //change apparience select
+            $('select').each(function(){
+
+                if($(this).parent().hasClass('select'))
+                    return;
+                var widhtSel;
+
+                widhtSel=$(this).attr('data-width');
+
+                $(this).wrap('<span class="select" style="width:'+widhtSel+'px; position:relative;"></span>').addClass("hide");//css({display:'none'});
+
+                if($(this).is(":disabled")){
+                    $(this).parent().addClass("disabled");
+
+
+                }
+
+                if($(this).length && $(this).val()!=null && $(this).val().length>0)
+                {
+                    $(this).parent().append('<div class="arrowSelect" ></div>');
+                    var currOption = $(this).find('option:selected');
+                    if(typeof currOption.data("text")=='undefined'){
+                        $(this).parent().append('<span class="text" style="width:'+widhtSel+'px">'+currOption.html()+'</span>');
+                    }else{
+                        $(this).parent().append('<span class="text" style="width:'+widhtSel+'px">'+currOption.data("text")+'</span>');
+                    }
+                }
+                else
+                {
+                    $(this).parent().append('<div class="arrowSelect" ></div>');
+                    var currOption = $(this).find('option:eq(0)');
+                    if(typeof currOption.data("text")=='undefined'){
+                        $(this).parent().append('<span class="text" style="width:'+widhtSel+'px">'+currOption.html()+'</span>');
+                    }else{
+                        $(this).parent().append('<span class="text" style="width:'+widhtSel+'px">'+currOption.data("text")+'</span>');
+                    }
+
+                }
+                addStyle='';
+                lengthOption=$(this).find('option').length;
+                listHeight=$(this).attr('data-list-height');
+                if(parseInt(listHeight)>0) {
+                    addStyle='height:'+listHeight+'px; overflow:auto';
+                } else if(lengthOption>10) {
+                    addStyle='height:196px; overflow:auto';
+                }
+
+                $(this).parent().append('<ul style="width:'+(parseInt(widhtSel)+40)+'px; '+addStyle+'"></ul>');
+                theUl=$(this).parent().find('ul');
+                $(this).find('option').each(function(){
+                    //console.log(typeof $(this).data("text")=='undefined')
+                    if(typeof $(this).data("text")=='undefined'){
+                        theUl.append('<li>'+$(this).html()+'</li>');
+                    }else{
+                        theUl.append('<li>'+$(this).data("text")+'</li>');
+                    }
+                });
+                theUl.find('li:last').addClass('last');
+
+
+            });
+            /*event click over item list dorpdown*/
+            $(' .select ul li').click(function(e){
+                e.stopPropagation();
+
+                theParent=$(this).parent().parent();
+                theParent.find('select option').removeAttr("selected");
+                theParent.find('select').val(theParent.find('select option').eq($(this).index()).val());
+                theParent.find('select option').eq($(this).index()).attr("selected","selected");
+                theParent.find('.text').html($(this).html());
+                $(' .select ul').css({ display:'none'});
+                theParent.find('select').trigger('change');
+            });
+        }
+
+        var initHideHeader = function() {
+
+//console.log("ok");
+            var didScroll;
+            var lastScrollTop = 0;
+            var delta = 5;
+            var navbarHeight = 450;
+
+            $(window).scroll(function(event){
+                didScroll = true;
+            });
+
+            setInterval(function() {
+                if (didScroll) {
+                    hasScrolled();
+                    didScroll = false;
+                }
+            }, 50);
+
+            function hasScrolled() {
+                var st = $(this).scrollTop();
+
+                // Make sure they scroll more than delta
+                //if(Math.abs(lastScrollTop - st) <= delta)
+                /*if(navbarHeight <= st)
+                    return;*/
+
+                // If they scrolled down and are past the navbar, add class .nav-up.
+                // This is necessary so you never see what is "behind" the navbar.
+                //if (st > lastScrollTop && st > navbarHeight){
+                if(navbarHeight<st){
+                    // Scroll Down
+                    $('header').addClass('up');
+                } else {
+                    // Scroll Up
+                    //if(st + $(window).height() < $(document).height()) {
+                    $('header').removeClass('up');
+                    // }
+                }
+
+                lastScrollTop = st;
+            }
+
+        }
+
+
+    </script>
 </head>
 <body>
 <div id="fb-root"></div>
