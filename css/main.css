@@ -1461,10 +1461,10 @@ header.up {
 .catalog_sidebar ul li a {
     color: #ffffff;
     display: block;
-    font-family: "din_alternate_mediumregular";
     font-size: 16px;
     padding: 5px 0;
     transition: all 0.4s ease;
+    text-transform: uppercase;
 }
 
 .catalog_sidebar ul li a:hover,

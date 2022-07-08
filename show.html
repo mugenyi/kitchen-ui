@@ -283,6 +283,53 @@
 </head>
 <body>
 <div id="fb-root"></div>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(window).resize(function(){
+
+            leftOver=($(window).width()-$('.list_categories_top .content_center').width())/2;
+
+            if($(window).width()>1169)
+                imageWidth=$(window).width()-leftOver-299;
+            else
+            if($(window).width()>767)
+                imageWidth=$(window).width()-leftOver-254;
+            else
+                imageWidth=$(window).width()-leftOver-231;
+
+            $('.img-right-banner').css({width:imageWidth})
+        });
+
+        $(".addFavoriteID").click(function(){
+            var $el = $(this);
+            var idProd = $el.data("id");
+            var action = $el.hasClass("active") ? "remove" : "add";
+            $.getJSON("/ajax/favorites.php", {idProd: idProd, action: action},
+                function (data) {
+                    if (data.res) {
+                        $el.toggleClass("active");
+                    } else {
+                        alert(data.message)
+                    }
+                })
+        });
+
+
+
+        if($(".catalog_sidebar").length) {
+            //var sidebar_top = $(".catalog_sidebar").offset().top -269;
+            var sidebar_top = $(".catalog_sidebar").offset().top -138;
+            $(window).scroll(function () {
+                //console.log($(window).scrollTop())
+                if ($(window).scrollTop() > sidebar_top) {
+                    $(".catalog_sidebar").addClass("sticky")
+                } else {
+                    $(".catalog_sidebar").removeClass("sticky")
+                }
+            })
+        }
+    });
+</script>
 <main id="panel" class="panel">
     <header>
         <!-- HEADER DESKTOP -->
@@ -334,18 +381,18 @@
                         </ul>
                     </div>
                     <ul class="menu2">
-                        <li class="">
+                        <li >
                             <a href="/catalog/" class="sub_menu_drop ">Meal Type</a>
                             <div class="sub_menu">
                                 <div class="content_center">
                                     <div class="col-left-menu">
                                         <div class="title">ORDER ONLINE NOW</div>
                                         <div class="column">
-                                            <a href="/show.html">Day entrees</a>
+                                            <a href="#">Day entrees</a>
                                             <a href="#">A.M Tea & bites</a>
                                             <a href="#">Breakfast</a>
                                             <a href="#">P.M Tea & Bites</a>
-                                 
+
                                         </div>
                                         <div class="column">
 
@@ -368,7 +415,7 @@
                                 </div>
                             </div>
                         </li>
-                        <li class="">
+                        <li >
                             <a href="/catalog/" class="sub_menu_drop ">EVENT TYPE</a>
                             <div class="sub_menu">
                                 <div class="content_center">
@@ -513,74 +560,115 @@
 
     </header>
     <div class="main-content ">
+        <section>
+            <div class="content_center_big hidden-mobile">
+                <div class="breadcrumb">MEAL TYPE</div>
 
+                <div class="catalog_sidebar">
 
-        <section style="position:relative; z-index:1;">
-            <script src="/js/slides.js"></script>
-            <script>
+                    <ul>
 
-                $(function () {
-                    $('#slides').superslides({
-                        animation: 'fade',
-                        pagination: false,
-                        play: 5000,
-                        inherit_width_from: "#slides"
-                    });
-                })
+                        <li>
+                        </li>
 
-            </script>
+                        <li>
+                            <a href="#" >Day entrees</a>
+                        </li>
 
-            <div id="slides">
-                <div class="slides-container">
-                    <a href="/product/signature-bowl?cat=bowls" class="slider_image"
-                       style="background-image:url('/images/slide1.jpg');"></a>
-                    <a href="/product/signature-bowl" class="slider_image"
-                       style="background-image:url('/images/slide2.jpg');"></a>
-                    <a href="https://www.pumpernichttps:/product/signature-bowlkels.ca/pickup"
-                       class="slider_image"
-                       style="background-image:url('/images/slide3.jpg');"></a>
-                    <a href="/product/signature-bowl" class="slider_image"
-                       style="background-image:url('/images/slide4.jpg');"></a>
-                    <a href="/product/signature-bowl" class="slider_image"
-                       style="background-image:url('/images/slide5.jpg');"></a>
-                    <a href="/product/signature-bowl" class="slider_image"
-                       style="background-image:url('/images/slide6.jpg');"></a>
+                        <li>
+                            <a href="/catalog/bowls" >A.M Tea & bites</a>
+                        </li>
+
+                        <li>
+                            <a href="/catalog/breakfast" >BREAKFAST</a>
+                        </li>
+
+                        <li>
+                            <a href="/catalog/platters" >Breakfast</a>
+                        </li>
+
+                        <li>
+                            <a href="/catalog/sandwiches-and-wraps" >P.M Tea & Bites</a>
+                        </li>
+
+                        <li>
+                            <a href="/catalog/salads" >Dinner</a>
+                        </li>
+
+                        <li>
+                            <a href="/catalog/mains-from-the-grill" >Beverages</a>
+                        </li>
+
+                        <li>
+                            <a href="/catalog/hot-entrees" >Group platters</a>
+                        </li>
+
+                        <li>
+                            <a href="/catalog/hors-doeuvres" >Sweets & Desserts</a>
+                        </li>
+                    </ul>
                 </div>
+                <div class="list_products   with_sidebar">
 
-                <nav class="slides-navigation">
-                    <a href="#" class="next">Next</a>
-                    <a href="#" class="prev">Previous</a>
-                </nav>
-                <a href="#main_cont" class="go_to"> <img src="/images/down_arrow.png"/></a>
+                    <a href="/product_group/assorted-sandwich-meal?cat=lunch-packages" class="product_box">
+                        <div class="imageHolder">
+                            <img class="top" src="/images/slide1.jpg" alt="">
+                            <img class="bottom" src="/images/slide1.jpg" alt="">
+                            <img src="/images/icons/best.png" class="best">
+
+                        </div>
+                        <div class="text"><span>MEAL 1</span></div>
+
+                    </a>
+
+                    <a href="/product_group/artisanal-grilled-sandwich-meal?cat=lunch-packages" class="product_box">
+                        <div class="imageHolder">
+                            <img class="top" src="/images/slide2.jpg" alt="">
+                            <img class="bottom" src="/images/slide2.jpg" alt="">
+
+                        </div>
+                        <div class="text"><span>MEAL 2</span></div>
+
+                    </a>
+
+                    <a href="/product_group/hot-deli-meal?cat=lunch-packages" class="product_box">
+                        <div class="imageHolder">
+                            <img class="top" src="/images/slide3.jpg" alt="">
+                            <img class="bottom" src="/images/slide3.jpg" alt="">
+
+                        </div>
+                        <div class="text"><span>MEAL 3</span></div>
+
+                    </a>
+
+                    <a href="/product_group/assorted-wrap-meal?cat=lunch-packages" class="product_box">
+                        <div class="imageHolder">
+                            <img class="top" src="/images/slide4.jpg" alt="">
+                            <img class="bottom" src="/images/slide4.jpg" alt="">
+
+                        </div>
+                        <div class="text"><span>MEAL 4</span></div>
+
+                    </a>
+
+                    <a href="/product_group/opa-chicken-pita-sandwich-meal?cat=lunch-packages" class="product_box">
+                        <div class="imageHolder">
+                            <img class="top" src="/images/slide5.jpg" alt="">
+                            <img class="bottom" src="/images/slide5.jpg" alt="">
+
+                        </div>
+                        <div class="text"><span>MEAL 5</span></div>
+
+                    </a>
+
+                    <div class="clear spacing-catalog"></div>
+                </div>
             </div>
-            <div class="home_principal hidden-mobile" id="main_cont">
-                <div class="content_center">
-                    <!--<div class="home_principal_logo"></div>-->
-                    <h1>CATERING & EXPRESS TAKE-OUT</h1>
-                    <p>WE CATER THROUGHOUT KAMPALA<br/>
-                        <br/>
-                        EXPRESS TAKE-OUT IS AVAILABLE AT SOME LOCATIONS.<br/>
-                        ORDER YOUR PERSONAL TAKE-OUT MEAL ONLINE &amp; PICK UP AT OUR COUNTERS.</p>
-
-                    <p><strong>FEEL FREE TO CALL OR EMAIL US AT <span class="phone"> &nbsp;+256 752 901 590 &nbsp; &nbsp;
-                      </span> &nbsp; <span>info@kahwa2go.com</span></strong><br/>
-                        <strong>PROUDLY FEEDING UGANDANS GOOD FOOD, SINCE 1986.</strong></p></div>
-            </div>
-            <div class="content_center home_content">
-
-                <div class="home_banner_1_1"><a href="/pickup"><img
-                        src="/images/banner3.jpg"/></a></div>
-                <div class="home_banner_1_2"><a href="/product/signature-bowl"><img
-                        src="/images/banner1.jpg"/></a></div>
-                <div class="home_banner_2_1"><a href="/catalog/breakfast"><img
-                        src="/images/banner2.jpg"/></a></div>
-
-                <div class="home_banner_2_2"><a href="/catalog/individual-package-menu"><img
-                        src="/images/banner4.jpg"/></a></div>
-
-                <div class="clear"></div>
-            </div>
+            <div class="clear"></div>
         </section>
+        <div class="list_categories_top hidden-mobile">
+            <div class="img-full-banner" style=" background-image:url('/images/bottom-banner.jpg')"></div>
+        </div>
 
         <script>
             var business_hours_config = {
