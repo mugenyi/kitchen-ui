@@ -5258,7 +5258,7 @@ table.shipInfo td:last-child {
 ul.products_group {
     list-style: none;
     padding: 0;
-    margin: 0;
+    margin: 4rem 0 0 0;
 }
 
 ul.products_group li {
